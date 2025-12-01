@@ -10,12 +10,7 @@
 
 ### Course Concept(s)
 
-This project integrates multiple concepts from the course modules:
-
-- **Flask API Development**: RESTful endpoints (`/health`, `/upload`, `/summary`, `/forecast`) with proper HTTP methods and status codes
-- **Logging/Metrics**: Structured logging using Python's `logging` module to track API operations and data uploads
-- **Containerization**: Docker-based deployment for reproducible, isolated execution environments
-- **Environment Configuration**: Environment variable management via `.env` files for port configuration
+This project integrates multiple concepts from the course modules. The system uses Flask API Development with RESTful endpoints (`/health`, `/upload`, `/summary`, `/forecast`) that implement proper HTTP methods and status codes. Structured logging is implemented using Python's `logging` module to track API operations and data uploads. The application is containerized with Docker for reproducible, isolated execution environments. Environment configuration is managed via `.env` files for port configuration.
 
 ### Architecture Diagram
 
@@ -61,11 +56,7 @@ This project integrates multiple concepts from the course modules:
 
 ### Data/Models/Services
 
-- **Input Format**: JSON objects with `income` (required) and expense categories (e.g., `rent`, `food`, `transport`, `entertainment`)
-- **Sample Data**: Provided in `assets/sample_expenses.json` for testing
-- **Data Storage**: In-memory list (ephemeral, resets on container restart)
-- **Inflation Model**: Simple 3% annual inflation rate for 5-year forecasting
-- **License**: Sample data is synthetic and provided for demonstration purposes
+The API accepts JSON objects with `income` (required) and expense categories (e.g., `rent`, `food`, `transport`, `entertainment`) as input format. Sample data is provided in `assets/sample_expenses.json` for testing purposes. Data storage uses an in-memory list that is ephemeral and resets on container restart. The inflation model uses a simple 3% annual inflation rate for 5-year forecasting. All sample data is synthetic and provided for demonstration purposes.
 
 ## 3) How to Run (Local)
 
@@ -105,11 +96,7 @@ curl http://localhost:8080/forecast
 
 ### Why Flask API?
 
-Flask was chosen as the framework because it provides a lightweight, flexible foundation for building RESTful APIs. It aligns with the course module on Flask API development and offers:
-- Simple routing and request handling
-- Built-in JSON support
-- Easy integration with containerization
-- Minimal dependencies for fast container builds
+Flask was chosen as the framework because it provides a lightweight, flexible foundation for building RESTful APIs. It aligns with the course module on Flask API development and offers simple routing and request handling, built-in JSON support, easy integration with containerization, and minimal dependencies for fast container builds.
 
 **Alternatives considered:**
 - **FastAPI**: More modern with automatic OpenAPI docs, but Flask was the focus of the course module
@@ -118,53 +105,25 @@ Flask was chosen as the framework because it provides a lightweight, flexible fo
 
 ### Tradeoffs
 
-**Performance:**
-- **In-memory storage**: Fast reads/writes but data is lost on container restart. Suitable for demo/prototype, but production would need a database (PostgreSQL, MongoDB, etc.)
-- **Single-threaded Flask dev server**: Fine for development/testing, but production requires a WSGI server (Gunicorn, uWSGI) behind a reverse proxy (Nginx)
+**Performance:** In-memory storage provides fast reads/writes but data is lost on container restart, making it suitable for demo/prototype while production would need a database (PostgreSQL, MongoDB, etc.). The single-threaded Flask dev server is fine for development/testing, but production requires a WSGI server (Gunicorn, uWSGI) behind a reverse proxy (Nginx).
 
-**Complexity:**
-- **Simple inflation model**: Fixed 3% rate is easy to understand but doesn't account for category-specific inflation or economic volatility
-- **No authentication**: Keeps the API simple but means no multi-user support or data isolation
+**Complexity:** The simple inflation model uses a fixed 3% rate that is easy to understand but doesn't account for category-specific inflation or economic volatility. The lack of authentication keeps the API simple but means no multi-user support or data isolation.
 
-**Maintainability:**
-- **Modular structure**: `src/` directory separates application code from configuration
-- **Environment variables**: Port configuration externalized for flexibility
-- **Docker**: Ensures consistent execution environment across machines
+**Maintainability:** The modular structure uses a `src/` directory to separate application code from configuration. Environment variables externalize port configuration for flexibility. Docker ensures consistent execution environment across machines.
 
 ### Security/Privacy
 
-**Current Implementation:**
-- No authentication/authorization (demo only)
-- Input validation: Basic check for `income` field presence
-- No PII handling: All data is financial aggregates, not personal identifiers
-- Secrets management: Environment variables via `.env` (not committed to repo)
+**Current Implementation:** The system has no authentication/authorization (demo only). Input validation consists of a basic check for `income` field presence. There is no PII handling as all data is financial aggregates, not personal identifiers. Secrets management uses environment variables via `.env` files that are not committed to the repository.
 
-**Production Considerations:**
-- Add input validation (e.g., ensure numeric values, reasonable ranges)
-- Implement rate limiting to prevent abuse
-- Add HTTPS/TLS for encrypted communication
-- Consider authentication (API keys, OAuth) for multi-user scenarios
-- Use a database with proper access controls instead of in-memory storage
+**Production Considerations:** Production deployment should add input validation (e.g., ensure numeric values, reasonable ranges), implement rate limiting to prevent abuse, add HTTPS/TLS for encrypted communication, consider authentication (API keys, OAuth) for multi-user scenarios, and use a database with proper access controls instead of in-memory storage.
 
 ### Operations
 
-**Logging:**
-- Python `logging` module configured at INFO level
-- Logs expense uploads for audit trail
-- Container logs accessible via `docker logs`
+**Logging:** The Python `logging` module is configured at INFO level and logs expense uploads for audit trail. Container logs are accessible via `docker logs`.
 
-**Scaling:**
-- Current design is single-container, single-instance
-- Horizontal scaling would require:
-  - Shared database (Redis, PostgreSQL) instead of in-memory storage
-  - Load balancer (Nginx, HAProxy)
-  - Container orchestration (Kubernetes, Docker Swarm)
+**Scaling:** The current design is single-container, single-instance. Horizontal scaling would require a shared database (Redis, PostgreSQL) instead of in-memory storage, a load balancer (Nginx, HAProxy), and container orchestration (Kubernetes, Docker Swarm).
 
-**Known Limitations:**
-- Data persistence: All data lost on container restart
-- No concurrent user isolation: All users share the same in-memory data store
-- Fixed inflation rate: Doesn't adapt to economic conditions or category-specific trends
-- No historical tracking: Only the latest uploaded expenses are analyzed
+**Known Limitations:** Data persistence is not implemented, so all data is lost on container restart. There is no concurrent user isolation as all users share the same in-memory data store. The fixed inflation rate doesn't adapt to economic conditions or category-specific trends. There is no historical tracking as only the latest uploaded expenses are analyzed.
 
 ## 5) Results & Evaluation
 
@@ -203,17 +162,11 @@ Flask was chosen as the framework because it provides a lightweight, flexible fo
 
 ### Performance Notes
 
-- **Container Build Time**: ~2-3 seconds (cached layers)
-- **API Response Time**: <10ms for all endpoints (local testing)
-- **Memory Footprint**: ~50-100MB (Python 3.11-slim base image + Flask)
-- **Container Size**: ~150MB (compressed)
+Container build time is approximately 2-3 seconds with cached layers. API response time is less than 10ms for all endpoints in local testing. Memory footprint is approximately 50-100MB using the Python 3.11-slim base image with Flask. Container size is approximately 150MB when compressed.
 
 ### Validation/Tests
 
-Basic smoke tests are provided in `tests/test_app.py`:
-- Health endpoint returns 200 OK
-- Upload and summary endpoints work correctly
-- Savings rate calculation is included in summary
+Basic smoke tests are provided in `tests/test_app.py`. The tests verify that the health endpoint returns 200 OK, that upload and summary endpoints work correctly, and that savings rate calculation is included in the summary.
 
 Run tests (requires pytest):
 ```bash
@@ -223,25 +176,11 @@ pytest tests/test_app.py
 
 ## 6) What's Next
 
-**Planned Improvements:**
-1. **Database Integration**: Replace in-memory storage with PostgreSQL or MongoDB for persistence
-2. **User Authentication**: Add API key or JWT-based authentication for multi-user support
-3. **Historical Analysis**: Track expenses over time and provide trend analysis
-4. **Category-Specific Inflation**: Use different inflation rates per expense category
-5. **Budget Alerts**: Notify users when expenses exceed thresholds
-6. **Export Functionality**: Generate CSV/PDF reports of financial summaries
+**Planned Improvements:** Future work includes database integration to replace in-memory storage with PostgreSQL or MongoDB for persistence, user authentication using API keys or JWT-based authentication for multi-user support, historical analysis to track expenses over time and provide trend analysis, category-specific inflation using different inflation rates per expense category, budget alerts to notify users when expenses exceed thresholds, and export functionality to generate CSV/PDF reports of financial summaries.
 
-**Refactors:**
-- Extract business logic into separate modules (e.g., `calculations.py`, `forecasting.py`)
-- Add configuration management class for better env var handling
-- Implement proper error handling with custom exception classes
-- Add request validation using a library like `marshmallow` or `pydantic`
+**Refactors:** Planned refactoring includes extracting business logic into separate modules (e.g., `calculations.py`, `forecasting.py`), adding a configuration management class for better env var handling, implementing proper error handling with custom exception classes, and adding request validation using a library like `marshmallow` or `pydantic`.
 
-**Stretch Features:**
-- Machine learning model for expense prediction based on historical patterns
-- Integration with banking APIs for automatic expense import
-- Web dashboard (React/Vue frontend) for visual budget analysis
-- Mobile app (React Native) for on-the-go expense tracking
+**Stretch Features:** Potential stretch features include a machine learning model for expense prediction based on historical patterns, integration with banking APIs for automatic expense import, a web dashboard (React/Vue frontend) for visual budget analysis, and a mobile app (React Native) for on-the-go expense tracking.
 
 ## 7) Links
 
@@ -257,6 +196,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Credits
 
-- Flask framework: https://flask.palletsprojects.com/
-- Python Docker image: https://hub.docker.com/_/python
-- Sample expense data: Synthetic data created for demonstration purposes
+This project uses the Flask framework (https://flask.palletsprojects.com/), the Python Docker image (https://hub.docker.com/_/python), and synthetic sample expense data created for demonstration purposes.
