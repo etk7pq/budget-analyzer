@@ -2,9 +2,11 @@
 
 ## 1) Executive Summary
 
-**Problem:** Many individuals track expenses inconsistently and lack a clear view of how day-to-day spending choices compound over months and years. Without structured feedback, it is hard to understand opportunity costs, identify budget leaks, or see how inflation quietly erodes purchasing power. People often rely on spreadsheets or banking apps that show totals but don't translate those numbers into actionable insights such as savings rate, category trends, or long-term projections. This project addresses that gap by turning simple monthly inputs into interpretable metrics and forward-looking guidance.
+**Problem:** 
+Many individuals track expenses inconsistently and lack a clear view of how day-to-day spending choices compound over months and years. Without structured feedback, it is hard to understand opportunity costs, identify budget leaks, or see how inflation quietly erodes purchasing power. People often rely on spreadsheets or banking apps that show totals but don't translate those numbers into actionable insights such as savings rate, category trends, or long-term projections. This project addresses that gap by turning simple monthly inputs into interpretable metrics and forward-looking guidance.
 
-**Solution:** This personal budget analyzer is a RESTful API built with Flask that ingests a user's monthly income and expense categories, computes core financial indicators (savings rate, total expenses, largest expense category), and generates inflation-aware forecasts for future expenses. The API demonstrates how modest, consistent analysis can improve financial decision-making by highlighting savings rate, largest expense categories, and how a baseline inflation model shifts affordability over a five-year horizon. The system is containerized with Docker for easy deployment and reproducibility.
+**Solution:** 
+This personal budget analyzer is a RESTful API built with Flask that ingests a user's monthly income and expense categories, computes core financial indicators (savings rate, total expenses, largest expense category), and generates inflation-aware forecasts for future expenses. The API demonstrates how modest, consistent analysis can improve financial decision-making by highlighting savings rate, largest expense categories, and how a baseline inflation model shifts affordability over a five-year horizon. The system is containerized with Docker for easy deployment and reproducibility.
 
 ## 2) System Overview
 
@@ -105,25 +107,33 @@ Flask was chosen as the framework because it provides a lightweight, flexible fo
 
 ### Tradeoffs
 
-**Performance:** In-memory storage provides fast reads/writes but data is lost on container restart, making it suitable for demo/prototype while production would need a database (PostgreSQL, MongoDB, etc.). The single-threaded Flask dev server is fine for development/testing, but production requires a WSGI server (Gunicorn, uWSGI) behind a reverse proxy (Nginx).
+**Performance:** 
+In-memory storage provides fast reads/writes but data is lost on container restart, making it suitable for demo/prototype while production would need a database (PostgreSQL, MongoDB, etc.). The single-threaded Flask dev server is fine for development/testing, but production requires a WSGI server (Gunicorn, uWSGI) behind a reverse proxy (Nginx).
 
-**Complexity:** The simple inflation model uses a fixed 3% rate that is easy to understand but doesn't account for category-specific inflation or economic volatility. The lack of authentication keeps the API simple but means no multi-user support or data isolation.
+**Complexity:** 
+The simple inflation model uses a fixed 3% rate that is easy to understand but doesn't account for category-specific inflation or economic volatility. The lack of authentication keeps the API simple but means no multi-user support or data isolation.
 
-**Maintainability:** The modular structure uses a `src/` directory to separate application code from configuration. Environment variables externalize port configuration for flexibility. Docker ensures consistent execution environment across machines.
+**Maintainability:** 
+The modular structure uses a `src/` directory to separate application code from configuration. Environment variables externalize port configuration for flexibility. Docker ensures consistent execution environment across machines.
 
 ### Security/Privacy
 
-**Current Implementation:** The system has no authentication/authorization (demo only). Input validation consists of a basic check for `income` field presence. There is no PII handling as all data is financial aggregates, not personal identifiers. Secrets management uses environment variables via `.env` files that are not committed to the repository.
+**Current Implementation:** 
+The system has no authentication/authorization (demo only). Input validation consists of a basic check for `income` field presence. There is no PII handling as all data is financial aggregates, not personal identifiers. Secrets management uses environment variables via `.env` files that are not committed to the repository.
 
-**Production Considerations:** Production deployment should add input validation (e.g., ensure numeric values, reasonable ranges), implement rate limiting to prevent abuse, add HTTPS/TLS for encrypted communication, consider authentication (API keys, OAuth) for multi-user scenarios, and use a database with proper access controls instead of in-memory storage.
+**Production Considerations:** 
+Production deployment should add input validation (e.g., ensure numeric values, reasonable ranges), implement rate limiting to prevent abuse, add HTTPS/TLS for encrypted communication, consider authentication (API keys, OAuth) for multi-user scenarios, and use a database with proper access controls instead of in-memory storage.
 
 ### Operations
 
-**Logging:** The Python `logging` module is configured at INFO level and logs expense uploads for audit trail. Container logs are accessible via `docker logs`.
+**Logging:** 
+The Python `logging` module is configured at INFO level and logs expense uploads for audit trail. Container logs are accessible via `docker logs`.
 
-**Scaling:** The current design is single-container, single-instance. Horizontal scaling would require a shared database (Redis, PostgreSQL) instead of in-memory storage, a load balancer (Nginx, HAProxy), and container orchestration (Kubernetes, Docker Swarm).
+**Scaling:** 
+The current design is single-container, single-instance. Horizontal scaling would require a shared database (Redis, PostgreSQL) instead of in-memory storage, a load balancer (Nginx, HAProxy), and container orchestration (Kubernetes, Docker Swarm).
 
-**Known Limitations:** Data persistence is not implemented, so all data is lost on container restart. There is no concurrent user isolation as all users share the same in-memory data store. The fixed inflation rate doesn't adapt to economic conditions or category-specific trends. There is no historical tracking as only the latest uploaded expenses are analyzed.
+**Known Limitations:** 
+Data persistence is not implemented, so all data is lost on container restart. There is no concurrent user isolation as all users share the same in-memory data store. The fixed inflation rate doesn't adapt to economic conditions or category-specific trends. There is no historical tracking as only the latest uploaded expenses are analyzed.
 
 ## 5) Results & Evaluation
 
@@ -176,17 +186,18 @@ pytest tests/test_app.py
 
 ## 6) What's Next
 
-**Planned Improvements:** Future work includes database integration to replace in-memory storage with PostgreSQL or MongoDB for persistence, user authentication using API keys or JWT-based authentication for multi-user support, historical analysis to track expenses over time and provide trend analysis, category-specific inflation using different inflation rates per expense category, budget alerts to notify users when expenses exceed thresholds, and export functionality to generate CSV/PDF reports of financial summaries.
+**Planned Improvements:** 
+Future work includes database integration to replace in-memory storage with PostgreSQL or MongoDB for persistence, user authentication using API keys or JWT-based authentication for multi-user support, historical analysis to track expenses over time and provide trend analysis, category-specific inflation using different inflation rates per expense category, budget alerts to notify users when expenses exceed thresholds, and export functionality to generate CSV/PDF reports of financial summaries.
 
-**Refactors:** Planned refactoring includes extracting business logic into separate modules (e.g., `calculations.py`, `forecasting.py`), adding a configuration management class for better env var handling, implementing proper error handling with custom exception classes, and adding request validation using a library like `marshmallow` or `pydantic`.
+**Refactors:** 
+Planned refactoring includes extracting business logic into separate modules (e.g., `calculations.py`, `forecasting.py`), adding a configuration management class for better env var handling, implementing proper error handling with custom exception classes, and adding request validation using a library like `marshmallow` or `pydantic`.
 
-**Stretch Features:** Potential stretch features include a machine learning model for expense prediction based on historical patterns, integration with banking APIs for automatic expense import, a web dashboard (React/Vue frontend) for visual budget analysis, and a mobile app (React Native) for on-the-go expense tracking.
+**Stretch Features:** 
+Potential stretch features include a machine learning model for expense prediction based on historical patterns, integration with banking APIs for automatic expense import, a web dashboard (React/Vue frontend) for visual budget analysis, and a mobile app (React Native) for on-the-go expense tracking.
 
 ## 7) Links
 
 **GitHub Repo:** https://github.com/etk7pq/budget-analyzer
-
-**Public Cloud App (optional):** [INSERT-CLOUD-URL]
 
 ---
 
