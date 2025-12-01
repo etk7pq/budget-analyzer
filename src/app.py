@@ -44,7 +44,7 @@ def summary():
 		"income": income,
 		"total_expenses": total_expenses,
 		"savings": savings,
-		"savings_rate": savings_rage,
+		"savings_rate": savings_rate,
 		"largest_expense": largest_expense[0]
 	})
 
@@ -54,7 +54,7 @@ def forecast():
 		return jsonify({"error": "No data uploaded"}), 400
 
 	latest = expenses_data[-1]
-	total+expenses = sum(v for k, v in latest.items() if k != "income")
+	total_expenses = sum(v for k, v in latest.items() if k != "income")
 
 	#Current inflation rate: 3% per year
 	inflation_rate = 0.03
