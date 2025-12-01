@@ -4,7 +4,7 @@
 
 **Problem:** Many individuals track expenses inconsistently and lack a clear view of how day-to-day spending choices compound over months and years. Without structured feedback, it is hard to understand opportunity costs, identify budget leaks, or see how inflation quietly erodes purchasing power. People often rely on spreadsheets or banking apps that show totals but don't translate those numbers into actionable insights such as savings rate, category trends, or long-term projections. This project addresses that gap by turning simple monthly inputs into interpretable metrics and forward-looking guidance.
 
-**Solution:** This personal budget analyzer is a RESTful API built with Flask that ingests a user's monthly income and expense categories, computes core financial indicators (savings rate, total expenses, largest expense category), and generates inflation-aware forecasts for future expenses. The API demonstrates how modest, consistent analysis can improve financial decision-making by highlighting savings rate, largest expense categories, and how a baseline inflation model shifts affordability over a five-year horizon. The system is containerized with Docker for easy deployment and reproducibility.
+**Solution:** This personal budget analyzer is a RESTful API built with Flask that ingests a user's monthly income and expense categories, computes core financial indicators (savings rate, total expenses, largest expense category), and generates inflation-aware forecasts for future expenses. The API includes a modern web interface for easy interaction, as well as REST endpoints for programmatic access. The system demonstrates how modest, consistent analysis can improve financial decision-making by highlighting savings rate, largest expense categories, and how a baseline inflation model shifts affordability over a five-year horizon. The system is containerized with Docker for easy deployment and reproducibility.
 
 ## 2) System Overview
 
@@ -13,6 +13,7 @@
 This project integrates multiple concepts from the course modules:
 
 - **Flask API Development**: RESTful endpoints (`/health`, `/upload`, `/summary`, `/forecast`) with proper HTTP methods and status codes
+- **Web Interface**: Modern, responsive HTML/CSS/JavaScript frontend for user-friendly budget input and visualization
 - **Logging/Metrics**: Structured logging using Python's `logging` module to track API operations and data uploads
 - **Containerization**: Docker-based deployment for reproducible, isolated execution environments
 - **Environment Configuration**: Environment variable management via `.env` files for port configuration
@@ -81,6 +82,11 @@ docker build -t budgetanalyzer:latest .
 # Or run manually:
 docker run --rm -p 8080:8080 --env-file .env budgetanalyzer:latest
 
+# Access the web interface
+# Open your browser and go to: http://localhost:8080
+# You'll see a beautiful interface to input your budget and view results!
+
+# Or use the API directly via command line:
 # Health check
 curl http://localhost:8080/health
 
