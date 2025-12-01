@@ -9,7 +9,7 @@ def test_health():
 
 def test_upload_and_summary():
 	client = app.test_client()
-	payload= {"income": 3000, "rent": 1200, "food": 500, :transport": 200, "entertainment": 300}
+	payload = {"income": 3000, "rent": 1200, "food": 500, "transport": 200, "entertainment": 300}
 	response = client.post("/upload", json=payload)
 	assert response.status_code == 201
 
