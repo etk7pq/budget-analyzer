@@ -1,5 +1,8 @@
 import json
 import pytest
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from src.app import app
 
 @pytest.fixture
