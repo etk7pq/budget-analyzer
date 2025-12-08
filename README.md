@@ -28,7 +28,7 @@ This project integrates multiple concepts from the course modules. The system us
 │      Flask Application              │
 │  ┌───────────────────────────────┐ │
 │  │  /health  (GET)               │ │
-│
+│  |  /upload  (POST)              | |
 │  │  /summary (GET)               │ │
 │  │  /forecast (GET)              │ │
 │  └───────────────────────────────┘ │
