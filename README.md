@@ -12,7 +12,7 @@ This personal budget analyzer is a RESTful API built with Flask that ingests a u
 
 ### Course Concept(s)
 
-This project integrates multiple concepts from the course modules. The system uses Flask API Development with RESTful endpoints (`/health`, `/upload`, `/summary`, `/forecast`) that implement proper HTTP methods and status codes. Structured logging is implemented using Python's `logging` module to track API operations and data uploads. The application is containerized with Docker for reproducible, isolated execution environments. Environment configuration is managed via `.env` files for port configuration.
+This project integrates multiple concepts from the course modules. The system uses Flask API Development with RESTful endpoints (`/health`, `/summary`, `/forecast`) that implement proper HTTP methods and status codes. Structured logging is implemented using Python's `logging` module to track API operations and data uploads. The application is containerized with Docker for reproducible, isolated execution environments. Environment configuration is managed via `.env` files for port configuration.
 
 ### Architecture Diagram
 
@@ -28,7 +28,7 @@ This project integrates multiple concepts from the course modules. The system us
 │      Flask Application              │
 │  ┌───────────────────────────────┐ │
 │  │  /health  (GET)               │ │
-│  │  /upload  (POST)              │ │
+│
 │  │  /summary (GET)               │ │
 │  │  /forecast (GET)              │ │
 │  └───────────────────────────────┘ │
