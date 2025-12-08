@@ -205,5 +205,4 @@ Potential stretch features include a machine learning model for expense predicti
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Credits
-
-This project uses the Flask framework (https://flask.palletsprojects.com/), the Python Docker image (https://hub.docker.com/_/python), and synthetic sample expense data created for demonstration purposes.
+This project uses the Flask framework (https://flask.palletsprojects.com/), the Python Docker image (https://hub.docker.com/_/python), the Render Cloud Application(https://render.com/) and synthetic sample expense data created for demonstration purposes.
