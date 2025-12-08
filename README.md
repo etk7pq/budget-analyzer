@@ -119,7 +119,7 @@ The modular structure uses a `src/` directory to separate application code from 
 ### Security/Privacy
 
 **Current Implementation:** 
-The system has no authentication/authorization (demo only). Input validation consists of a basic check for `income` field presence. There is no PII handling as all data is financial aggregates, not personal identifiers. Secrets management uses environment variables via `.env` files that are not committed to the repository.
+The system has no authentication/authorization (demo only). Input validation consists of a basic check for `income` field presence. There is no PII handling as all data is financial aggregates, not personal identifiers. Secrets management uses environment variables via `.env` files that are not committed to the repository. Also, this prototype does not store sensitive financial data persistently.Future versions will include authentication and secure storage.
 
 **Production Considerations:** 
 Production deployment should add input validation (e.g., ensure numeric values, reasonable ranges), implement rate limiting to prevent abuse, add HTTPS/TLS for encrypted communication, consider authentication (API keys, OAuth) for multi-user scenarios, and use a database with proper access controls instead of in-memory storage.
